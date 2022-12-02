@@ -14,4 +14,10 @@ describe('Login Page', () => {
     const errorMessageSpan = queryByTestId('error-message-span')
     expect(errorMessageSpan).toBeNull()
   })
+
+  it('Should have submit button disable on start', () => {
+    const { getByRole } = render(<Login />)
+    const submitButton = getByRole('button', { name: /enter/i })
+    expect(submitButton).toHaveProperty('disabled', true)
+  })
 })
