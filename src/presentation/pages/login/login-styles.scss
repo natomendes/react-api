@@ -61,22 +61,6 @@ button {
       text-transform: uppercase;
     }
 
-    .inputWrap {
-      display: flex;
-      align-items: center;
-      position: relative;
-      input {
-        flex-grow: 1;
-      }
-
-      .status {
-        cursor: help;
-        font-size: 12px;
-        position: absolute;
-        right: 4px;
-      }
-    }
-
     .link {
       text-align: right;
       color: $primary;
