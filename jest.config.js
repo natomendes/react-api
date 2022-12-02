@@ -5,12 +5,10 @@ module.exports = {
   coverageProvider: 'v8',
   testEnvironment: 'jest-environment-node',
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    '.+\\.(ts|tsx)$': 'ts-jest'
   },
-  roots: ['<rootDir>/tests'],
-  // modulePaths: ['<rootDir>/src']
+  roots: ['<rootDir>/tests', '<rootDir>/src'],
   moduleNameMapper: {
-    '@/(.*)': '<rootDir>/src/$1',
-    '@/tests/(.*)': '<rootDir>../tests/$1'
+    '@/(.*)': '<rootDir>/src/$1'
   }
 }
