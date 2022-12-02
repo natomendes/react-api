@@ -41,19 +41,7 @@ button {
   flex-direction: column;
   height: 100vh;
   justify-content: space-between;
-  .header {
-    align-items: center;
-    background: $primary;
-    border-top: 40px solid $primaryDark;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 40px 0;
-
-    h1 {
-      color: $white;
-    }
-  }
+  
 
   .form {
     display: flex;
