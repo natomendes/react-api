@@ -111,5 +111,17 @@ describe('Login Page', () => {
       const submitButton = sut.getByRole('button', { name: /enter/i })
       expect(submitButton).toHaveProperty('disabled', false)
     })
+
+    it('Should show spinner on submit', () => {
+      const { sut } = makeSut()
+      const passwordInput = sut.getByPlaceholderText('enter your e-mail address')
+      fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+      const emailInput = sut.getByPlaceholderText('enter your e-mail address')
+      fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+      const submitButton = sut.getByRole('button', { name: /enter/i })
+      fireEvent.click(submitButton)
+      const spinnerComponent = sut.getByTestId('spinner')
+      expect(spinnerComponent).toBeTruthy()
+    })
   })
 })
