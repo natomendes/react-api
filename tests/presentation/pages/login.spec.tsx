@@ -119,5 +119,12 @@ describe('Login Page', () => {
         password
       })
     })
+
+    it('Should call Authentication with correct values', () => {
+      const { sut, authenticationSpy } = makeSut()
+      simulateValidSubmit(sut)
+      simulateValidSubmit(sut)
+      expect(authenticationSpy.callsCount).toBe(1)
+    })
   })
 })

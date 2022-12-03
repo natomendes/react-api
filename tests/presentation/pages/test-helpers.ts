@@ -14,7 +14,7 @@ export const populatePasswordField = (sut: RenderResult, password = faker.intern
 export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateEmailField(sut, email)
   populatePasswordField(sut, password)
-  const submitButton = sut.getByRole('button', { name: /enter/i })
+  const submitButton = sut.getByTestId('submit-login-button')
   fireEvent.click(submitButton)
 }
 
