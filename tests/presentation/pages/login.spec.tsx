@@ -1,38 +1,36 @@
 import React from 'react'
 import faker from 'faker'
 import 'jest-localstorage-mock'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import { Login } from '@/presentation/pages'
 import { ValidationStub, AuthenticationSpy } from '../mocks'
-import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus } from './test-helpers'
 import { InvalidCredentialsError } from '@/domain/errors'
+import { renderWithRouter } from './renderWithRouter'
 
 type SutTypes = {
   sut: RenderResult
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
+  history: MemoryHistory
 }
 
 type SutParams = {
   validationError: string
 }
 
-const history = createMemoryHistory()
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
+  const history = createMemoryHistory()
   validationStub.errorMessage = params?.validationError
-  const sut = render(
-    <Router history={history}>
-      <Login validation={validationStub} authentication={authenticationSpy} />
-    </Router>
-  )
+  const sut = renderWithRouter(<Login validation={validationStub} authentication={authenticationSpy} />, history)
   return {
     sut,
     validationStub,
-    authenticationSpy
+    authenticationSpy,
+    history
   }
 }
 
@@ -166,7 +164,7 @@ describe('Login Page', () => {
     })
 
     it('Should go to singup page', async () => {
-      const { sut } = makeSut()
+      const { sut, history } = makeSut()
       const register = sut.getByText(/create account/i)
       fireEvent.click(register)
       expect(history.length).toBe(2)

@@ -1,5 +1,5 @@
-import { RenderResult, fireEvent } from '@testing-library/react'
 import faker from 'faker'
+import { RenderResult, fireEvent } from '@testing-library/react'
 
 export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
   const emailInput = sut.getByPlaceholderText('enter your email address')
