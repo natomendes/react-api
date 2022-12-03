@@ -27,4 +27,11 @@ describe('Login Page', () => {
     expect(emailStatus.title).toBe('required field')
     expect(emailStatus.textContent).toBe('🔴')
   })
+
+  it('Should have password status title "required field" and text content "🔴" on start', () => {
+    const { getByTestId } = render(<Login />)
+    const passwordStatus = getByTestId('password-status')
+    expect(passwordStatus.title).toBe('required field')
+    expect(passwordStatus.textContent).toBe('🔴')
+  })
 })
