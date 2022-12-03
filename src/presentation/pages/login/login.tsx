@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Styles from './login-styles.scss'
 import { Authentication } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols'
@@ -67,7 +68,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Enter' }
           </button>
 
-          <span className={Styles.link}>create account</span>
+          <Link className={Styles.link} to='/signup'>create account</Link>
 
           <FormStatus />
         </form>
