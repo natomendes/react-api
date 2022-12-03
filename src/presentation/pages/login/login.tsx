@@ -68,7 +68,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Enter' }
           </button>
 
-          <Link className={Styles.link} to='/signup'>create account</Link>
+          <Link
+            className={Styles.link}
+            to='/signup'
+          >
+            create account
+          </Link>
 
           <FormStatus />
         </form>
