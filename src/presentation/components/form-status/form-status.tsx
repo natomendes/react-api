@@ -6,11 +6,11 @@ import Context from '@/presentation/contexts/form/form-context'
 type Props = React.HTMLAttributes<HTMLElement>
 
 const FormStatus: React.FC<Props> = (props: Props) => {
-  const { state: { isLoading }, errorState: { message } } = useContext(Context)
+  const { isLoading, errorMessage } = useContext(Context)
   return (
     <div className={Styles.errorWrap}>
     { isLoading && <Spinner className={Styles.spinner} data-testid="spinner"/> }
-    { message && <span className={Styles.error} data-testid="error-message-span">{ message }</span> }
+    { errorMessage && <span className={Styles.error} data-testid="error-message-span">{ errorMessage }</span> }
   </div>
   )
 }
