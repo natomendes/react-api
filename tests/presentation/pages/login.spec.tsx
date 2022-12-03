@@ -1,5 +1,6 @@
 import React from 'react'
 import faker from 'faker'
+import 'jest-localstorage-mock'
 import { Login } from '@/presentation/pages'
 import { ValidationStub, AuthenticationSpy } from '../mocks'
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
@@ -69,6 +70,9 @@ describe('Login Page', () => {
   })
   describe('Component Flow', () => {
     afterEach(cleanup)
+    beforeEach(() => {
+      localStorage.clear()
+    })
     it('Should show email status error if Validation fails', () => {
       const { sut, validationStub } = makeSut()
       validationStub.errorMessage = faker.random.words()
@@ -145,6 +149,13 @@ describe('Login Page', () => {
       await waitFor(() => expect(sut.queryByTestId('spinner')).toBeNull())
       const errorMessageSpan = sut.queryByTestId('error-message-span')
       expect(errorMessageSpan.textContent).toBe(error.message)
+    })
+
+    it('Should add accessToken to localStorage on success', async () => {
+      const { sut, authenticationSpy } = makeSut()
+      simulateValidSubmit(sut)
+      await waitFor(() => sut.getByRole('form'))
+      expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
     })
   })
 })
