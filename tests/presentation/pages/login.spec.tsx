@@ -20,4 +20,11 @@ describe('Login Page', () => {
     const submitButton = getByRole('button', { name: /enter/i })
     expect(submitButton).toHaveProperty('disabled', true)
   })
+
+  it('Should have email status title "required field" and text content "🔴" on start', () => {
+    const { getByTestId } = render(<Login />)
+    const emailStatus = getByTestId('email-status')
+    expect(emailStatus.title).toBe('required field')
+    expect(emailStatus.textContent).toBe('🔴')
+  })
 })
