@@ -11,6 +11,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
+  validationSpy.errorMessage = faker.random.words()
   const sut = render(<Login validation={validationSpy} />)
   return {
     sut,
@@ -19,8 +20,8 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Login Page', () => {
-  afterEach(cleanup)
   describe('Initial State', () => {
+    afterEach(cleanup)
     it('Should not render Spinner component on start', () => {
       const { sut } = makeSut()
       const spinnerComponent = sut.queryByTestId('spinner')
@@ -39,10 +40,10 @@ describe('Login Page', () => {
       expect(submitButton).toHaveProperty('disabled', true)
     })
 
-    it('Should have email status title "required field" and text content "🔴" on start', () => {
-      const { sut } = makeSut()
+    it('Should have email status title = Validation.errorMessage and text content "🔴" on start', () => {
+      const { sut, validationSpy } = makeSut()
       const emailStatus = sut.getByTestId('email-status')
-      expect(emailStatus.title).toBe('required field')
+      expect(emailStatus.title).toBe(validationSpy.errorMessage)
       expect(emailStatus.textContent).toBe('🔴')
     })
 
@@ -54,6 +55,7 @@ describe('Login Page', () => {
     })
   })
   describe('Communication with dependencies', () => {
+    afterEach(cleanup)
     it('Should call Validation with correct email on email input change', () => {
       const { sut, validationSpy } = makeSut()
       const email = faker.internet.email()
@@ -70,6 +72,15 @@ describe('Login Page', () => {
       fireEvent.input(passwordInput, { target: { value: password } })
       expect(validationSpy.fieldName).toBe('password')
       expect(validationSpy.fieldValue).toBe(password)
+    })
+
+    it('Should show email status error if Validation fails', () => {
+      const { sut, validationSpy } = makeSut()
+      const emailInput = sut.getByPlaceholderText('enter your e-mail address')
+      fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+      const emailStatus = sut.getByTestId('email-status')
+      expect(emailStatus.title).toBe(validationSpy.errorMessage)
+      expect(emailStatus.textContent).toBe('🔴')
     })
   })
 })
