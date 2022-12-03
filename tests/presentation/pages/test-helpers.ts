@@ -2,7 +2,7 @@ import { RenderResult, fireEvent } from '@testing-library/react'
 import faker from 'faker'
 
 export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
-  const emailInput = sut.getByPlaceholderText('enter your e-mail address')
+  const emailInput = sut.getByPlaceholderText('enter your email address')
   fireEvent.input(emailInput, { target: { value: email } })
 }
 

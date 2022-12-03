@@ -66,7 +66,7 @@ describe('Login Page', () => {
       expect(passwordStatus.textContent).toBe('🔴')
     })
   })
-  describe('Communication with dependencies', () => {
+  describe('Component Flow', () => {
     afterEach(cleanup)
     it('Should show email status error if Validation fails', () => {
       const { sut, validationStub } = makeSut()

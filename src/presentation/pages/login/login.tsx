@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './login-styles.scss'
-import { LoginHeader, Footer, Input, FormStatus, Spinner } from '@/presentation/components'
-import Context from '@/presentation/contexts/form/form-context'
-import { Validation } from '@/presentation/protocols/validation'
 import { Authentication } from '@/domain/usecases'
+import { Validation } from '@/presentation/protocols'
+import Context from '@/presentation/contexts/form/form-context'
+import { LoginHeader, Footer, Input, FormStatus, Spinner } from '@/presentation/components'
+import { initialState } from './login-initial-state'
 
 type Props = {
   validation: Validation
@@ -11,14 +12,7 @@ type Props = {
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
-  const [state, setState] = useState({
-    isLoading: false,
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
-    errorMessage: ''
-  })
+  const [state, setState] = useState(initialState)
 
   useEffect(() => {
     setState({
@@ -37,18 +31,39 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   return (
     <div className={Styles.login}>
       <LoginHeader />
+
       <Context.Provider value={{ state, setState }}>
-        <form className={Styles.form} onSubmit={handleSubmit}>
+        <form
+          className={Styles.form}
+          onSubmit={handleSubmit}
+        >
           <h2>Login</h2>
-          <Input type="email" name="email" placeholder='enter your e-mail address' />
-          <Input type="password" name="password" placeholder='enter your password' />
-          <button className={Styles.submit} type="submit" disabled={!!state.emailError || !!state.passwordError}>
-          { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Enter' }
+
+          <Input
+            type="email"
+            name="email"
+            placeholder='enter your email address'
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder='enter your password'
+          />
+
+          <button
+            className={Styles.submit}
+            type="submit"
+            disabled={!!state.emailError || !!state.passwordError}
+          >
+            { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Enter' }
           </button>
+
           <span className={Styles.link}>create account</span>
+
           <FormStatus />
         </form>
       </Context.Provider>
+
       <Footer />
     </div>
   )
