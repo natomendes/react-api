@@ -17,10 +17,10 @@ const Input: React.FC<Props> = (props: Props) => {
   }
 
   const getStatus = (): string => {
-    return '🔴'
+    return state[`${props.name}Error`] ? '🔴' : '🟢'
   }
   const getTitle = (): string => {
-    return state[`${props.name}Error`]
+    return state[`${props.name}Error`] || 'Your e-mail is valid'
   }
   return (
     <div className={Styles.inputWrap}>
