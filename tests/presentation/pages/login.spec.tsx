@@ -72,26 +72,26 @@ describe('Login Page', () => {
       const { sut, validationStub } = makeSut()
       validationStub.errorMessage = faker.random.words()
       populateEmailField(sut)
-      checkFieldStatus(sut, 'email', validationStub.errorMessage, '🔴')
+      checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
 
     it('Should show password status error if Validation fails', () => {
       const { sut, validationStub } = makeSut()
       validationStub.errorMessage = faker.random.words()
       populatePasswordField(sut)
-      checkFieldStatus(sut, 'password', validationStub.errorMessage, '🔴')
+      checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
 
     it('Should show email status ok if Validation succeeds', () => {
       const { sut } = makeSut()
       populateEmailField(sut)
-      checkFieldStatus(sut, 'email', 'Your e-mail is valid', '🟢')
+      checkFieldStatus(sut, 'email')
     })
 
     it('Should show password status ok if Validation succeeds', () => {
       const { sut } = makeSut()
       populatePasswordField(sut)
-      checkFieldStatus(sut, 'password', 'Your password is valid', '🟢')
+      checkFieldStatus(sut, 'password')
     })
 
     it('Should enabled submit button if form is valid', () => {

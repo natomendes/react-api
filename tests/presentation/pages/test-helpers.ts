@@ -18,8 +18,8 @@ export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.em
   fireEvent.click(submitButton)
 }
 
-export const checkFieldStatus = (sut: RenderResult, fieldName: string, message: string, content: string): void => {
+export const checkFieldStatus = (sut: RenderResult, fieldName: string, validationError?: string): void => {
   const fieldStatus = sut.getByTestId(`${fieldName}-status`)
-  expect(fieldStatus.title).toBe(message)
-  expect(fieldStatus.textContent).toBe(content)
+  expect(fieldStatus.title).toBe(validationError || `Your ${fieldName} is valid`)
+  expect(fieldStatus.textContent).toBe(validationError ? '🔴' : '🟢')
 }

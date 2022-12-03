@@ -20,7 +20,7 @@ const Input: React.FC<Props> = (props: Props) => {
     return state[`${props.name}Error`] ? '🔴' : '🟢'
   }
   const getTitle = (): string => {
-    return state[`${props.name}Error`] || (props.name === 'email' ? 'Your e-mail is valid' : 'Your password is valid')
+    return state[`${props.name}Error`] || (props.name === 'email' ? 'Your email is valid' : 'Your password is valid')
   }
   return (
     <div className={Styles.inputWrap}>
