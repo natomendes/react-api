@@ -93,5 +93,16 @@ describe('Login Page', () => {
       expect(passwordStatus.title).toBe('Your password is valid')
       expect(passwordStatus.textContent).toBe('🟢')
     })
+
+    it('Should enabled submit button if form is valid', () => {
+      const { sut, validationStub } = makeSut()
+      validationStub.errorMessage = null
+      const passwordInput = sut.getByPlaceholderText('enter your e-mail address')
+      fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+      const emailInput = sut.getByPlaceholderText('enter your e-mail address')
+      fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+      const submitButton = sut.getByRole('button', { name: /enter/i })
+      expect(submitButton).toHaveProperty('disabled', false)
+    })
   })
 })
