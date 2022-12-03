@@ -2,7 +2,7 @@ import React from 'react'
 import faker from 'faker'
 import { Login } from '@/presentation/pages'
 import { ValidationStub, AuthenticationSpy } from '../mocks'
-import { cleanup, render, RenderResult } from '@testing-library/react'
+import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react'
 import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus } from './test-helpers'
 
 type SutTypes = {
@@ -125,6 +125,14 @@ describe('Login Page', () => {
       simulateValidSubmit(sut)
       simulateValidSubmit(sut)
       expect(authenticationSpy.callsCount).toBe(1)
+    })
+
+    it('Should not call Authentication if form is invalid', () => {
+      const { sut, validationStub, authenticationSpy } = makeSut()
+      validationStub.errorMessage = faker.random.words()
+      populateEmailField(sut)
+      fireEvent.submit(sut.getByRole('form'))
+      expect(authenticationSpy.callsCount).toBe(0)
     })
   })
 })
