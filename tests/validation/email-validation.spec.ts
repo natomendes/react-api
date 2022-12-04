@@ -39,4 +39,12 @@ describe('EmailValidation', () => {
     const error = sut.validate(faker.internet.email())
     expect(error).toBeFalsy()
   })
+
+  it('Should return falsy if email is empty', () => {
+    const { sut, emailValidatorStub } = makeSut('email')
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+    const error = sut.validate('')
+    expect(isValidSpy).not.toHaveBeenCalled()
+    expect(error).toBeFalsy()
+  })
 })
