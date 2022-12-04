@@ -66,8 +66,21 @@ describe('Login Page', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
+
+    it('Should have inputs as read only on start', () => {
+      const { sut } = makeSut({ validationError: faker.random.words() })
+      const emailInput = sut.getByPlaceholderText('enter your email address')
+      expect(emailInput).toHaveProperty('readOnly', true)
+    })
   })
   describe('Component Flow', () => {
+    it('Should have inputs as read only false on focus', () => {
+      const { sut } = makeSut({ validationError: faker.random.words() })
+      const emailInput = sut.getByPlaceholderText('enter your email address')
+      fireEvent.focus(emailInput)
+      expect(emailInput).toHaveProperty('readOnly', false)
+    })
+
     it('Should show email status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       populateEmailField(sut)
