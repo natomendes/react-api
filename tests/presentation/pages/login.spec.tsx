@@ -5,7 +5,7 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { Login } from '@/presentation/pages'
 import { ValidationStub, AuthenticationSpy } from '../mocks'
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
-import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus } from './test-helpers'
+import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus, checkButtonIsDisabled, checkElementExists, checkElementNotExists, checkElementTextContent } from './test-helpers'
 import { InvalidCredentialsError } from '@/domain/errors'
 import { renderWithRouter } from './renderWithRouter'
 
@@ -34,60 +34,48 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
+afterEach(cleanup)
+beforeEach(() => {
+  localStorage.clear()
+})
+
 describe('Login Page', () => {
   describe('Initial State', () => {
     afterEach(cleanup)
     it('Should not render Spinner component on start', () => {
-      const { sut, validationStub } = makeSut()
-      validationStub.errorMessage = faker.random.words()
-      const spinnerComponent = sut.queryByTestId('spinner')
-      expect(spinnerComponent).toBeNull()
+      const { sut } = makeSut({ validationError: faker.random.words() })
+      checkElementNotExists(sut, 'spinner')
     })
 
     it('Should not render error message span component on start', () => {
-      const { sut, validationStub } = makeSut()
-      validationStub.errorMessage = faker.random.words()
-
-      const errorMessageSpan = sut.queryByTestId('error-message-span')
-      expect(errorMessageSpan).toBeNull()
+      const { sut } = makeSut({ validationError: faker.random.words() })
+      checkElementNotExists(sut, 'error-message-span')
     })
 
     it('Should have submit button disable on start', () => {
       const { sut } = makeSut({ validationError: faker.random.words() })
-
-      const submitButton = sut.getByRole('button', { name: /enter/i })
-      expect(submitButton).toHaveProperty('disabled', true)
+      checkButtonIsDisabled(sut, 'Enter', true)
     })
 
     it('Should have email status title = Validation.errorMessage and text content "🔴" on start', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      const emailStatus = sut.getByTestId('email-status')
-      expect(emailStatus.title).toBe(validationStub.errorMessage)
-      expect(emailStatus.textContent).toBe('🔴')
+      checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
 
     it('Should have password status title "required field" and text content "🔴" on start', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      const passwordStatus = sut.getByTestId('password-status')
-      expect(passwordStatus.title).toBe(validationStub.errorMessage)
-      expect(passwordStatus.textContent).toBe('🔴')
+      checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
   })
   describe('Component Flow', () => {
-    afterEach(cleanup)
-    beforeEach(() => {
-      localStorage.clear()
-    })
     it('Should show email status error if Validation fails', () => {
-      const { sut, validationStub } = makeSut()
-      validationStub.errorMessage = faker.random.words()
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       populateEmailField(sut)
       checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
 
     it('Should show password status error if Validation fails', () => {
-      const { sut, validationStub } = makeSut()
-      validationStub.errorMessage = faker.random.words()
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       populatePasswordField(sut)
       checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
@@ -108,16 +96,14 @@ describe('Login Page', () => {
       const { sut } = makeSut()
       populateEmailField(sut)
       populatePasswordField(sut)
-      const submitButton = sut.getByRole('button', { name: /enter/i })
-      expect(submitButton).toHaveProperty('disabled', false)
+      checkButtonIsDisabled(sut, 'Enter', false)
     })
 
     it('Should show spinner on submit', async () => {
       const { sut } = makeSut()
       simulateValidSubmit(sut)
       await waitFor(() => {
-        const spinnerComponent = sut.getByTestId('spinner')
-        expect(spinnerComponent).toBeTruthy()
+        checkElementExists(sut, 'spinner')
       })
     })
 
@@ -158,9 +144,8 @@ describe('Login Page', () => {
         .mockRejectedValueOnce(error)
       simulateValidSubmit(sut)
       await waitFor(() => {
-        expect(sut.queryByTestId('spinner')).toBeNull()
-        const errorMessageSpan = sut.queryByTestId('error-message-span')
-        expect(errorMessageSpan.textContent).toBe(error.message)
+        checkElementNotExists(sut, 'spinner')
+        checkElementTextContent(sut, 'error-message-span', error.message)
       })
     })
 
