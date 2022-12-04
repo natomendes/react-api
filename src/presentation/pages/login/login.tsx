@@ -26,15 +26,15 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    try {
-      if (!state.isLoading && !(state.emailError || state.passwordError)) {
+    if (!state.isLoading && !(state.emailError || state.passwordError)) {
+      try {
         setState({ ...state, isLoading: true })
         const { accessToken } = await authentication.auth({ email: state.email, password: state.password })
         localStorage.setItem('accessToken', accessToken)
         history.replace('/')
+      } catch (error) {
+        setState({ ...state, isLoading: false, errorMessage: error.message })
       }
-    } catch (error) {
-      setState({ ...state, isLoading: false, errorMessage: error.message })
     }
   }
 

@@ -112,29 +112,35 @@ describe('Login Page', () => {
       expect(submitButton).toHaveProperty('disabled', false)
     })
 
-    it('Should show spinner on submit', () => {
+    it('Should show spinner on submit', async () => {
       const { sut } = makeSut()
       simulateValidSubmit(sut)
-      const spinnerComponent = sut.getByTestId('spinner')
-      expect(spinnerComponent).toBeTruthy()
+      await waitFor(() => {
+        const spinnerComponent = sut.getByTestId('spinner')
+        expect(spinnerComponent).toBeTruthy()
+      })
     })
 
-    it('Should call Authentication with correct values', () => {
+    it('Should call Authentication with correct values', async () => {
       const { sut, authenticationSpy } = makeSut()
       const email = faker.internet.email()
       const password = faker.internet.password()
       simulateValidSubmit(sut, email, password)
-      expect(authenticationSpy.params).toEqual({
-        email,
-        password
+      await waitFor(() => {
+        expect(authenticationSpy.params).toEqual({
+          email,
+          password
+        })
       })
     })
 
-    it('Should call Authentication with correct values', () => {
+    it('Should call Authentication with correct values', async () => {
       const { sut, authenticationSpy } = makeSut()
       simulateValidSubmit(sut)
       simulateValidSubmit(sut)
-      expect(authenticationSpy.callsCount).toBe(1)
+      await waitFor(() => {
+        expect(authenticationSpy.callsCount).toBe(1)
+      })
     })
 
     it('Should not call Authentication if form is invalid', () => {
@@ -151,32 +157,38 @@ describe('Login Page', () => {
       jest.spyOn(authenticationSpy, 'auth')
         .mockRejectedValueOnce(error)
       simulateValidSubmit(sut)
-      await waitFor(() => expect(sut.queryByTestId('spinner')).toBeNull())
-      const errorMessageSpan = sut.queryByTestId('error-message-span')
-      expect(errorMessageSpan.textContent).toBe(error.message)
+      await waitFor(() => {
+        expect(sut.queryByTestId('spinner')).toBeNull()
+        const errorMessageSpan = sut.queryByTestId('error-message-span')
+        expect(errorMessageSpan.textContent).toBe(error.message)
+      })
     })
 
     it('Should add accessToken to localStorage on success', async () => {
       const { sut, authenticationSpy } = makeSut()
       simulateValidSubmit(sut)
-      await waitFor(() => sut.getByRole('form'))
-      expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+      await waitFor(() => {
+        expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+      })
     })
 
     it('Should go to singup page', async () => {
       const { sut, history } = makeSut()
       const register = sut.getByText(/create account/i)
       fireEvent.click(register)
-      expect(history.length).toBe(2)
-      expect(history.location.pathname).toBe('/signup')
+      await waitFor(() => {
+        expect(history.length).toBe(2)
+        expect(history.location.pathname).toBe('/signup')
+      })
     })
 
     it('Should go to main page on success', async () => {
       const { sut, history } = makeSut()
       simulateValidSubmit(sut)
-      await waitFor(() => sut.getByRole('form'))
-      expect(history.length).toBe(1)
-      expect(history.location.pathname).toBe('/')
+      await waitFor(() => {
+        expect(history.length).toBe(1)
+        expect(history.location.pathname).toBe('/')
+      })
     })
   })
 })
