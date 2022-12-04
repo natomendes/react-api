@@ -1,6 +1,7 @@
 import { EmailValidation } from '@/validation/validators'
 import { EmailValidator } from '@/validation/protocols'
 import { InvalidFieldError } from '@/validation/errors'
+import faker from 'faker'
 
 const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -29,7 +30,13 @@ describe('EmailValidation', () => {
   it('Should return error if email is invalid', () => {
     const { sut, emailValidatorStub } = makeSut('email')
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
-    const error = sut.validate('invalid_email')
+    const error = sut.validate(faker.random.word())
     expect(error).toEqual(new InvalidFieldError('email'))
+  })
+
+  it('Should return falsy if email invalid', () => {
+    const { sut } = makeSut('email')
+    const error = sut.validate(faker.internet.email())
+    expect(error).toBeFalsy()
   })
 })
