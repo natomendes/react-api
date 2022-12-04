@@ -170,5 +170,13 @@ describe('Login Page', () => {
       expect(history.length).toBe(2)
       expect(history.location.pathname).toBe('/signup')
     })
+
+    it('Should go to main page on success', async () => {
+      const { sut, history } = makeSut()
+      simulateValidSubmit(sut)
+      await waitFor(() => sut.getByRole('form'))
+      expect(history.length).toBe(1)
+      expect(history.location.pathname).toBe('/')
+    })
   })
 })
