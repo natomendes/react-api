@@ -45,6 +45,7 @@ module.exports = {
     react: 'React',
     'react-dom': 'ReactDOM'
   },
+  devtool: 'inline-source-map',
   plugins: [
     new CleanWebpackPlugin()
   ]
