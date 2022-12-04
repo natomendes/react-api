@@ -8,7 +8,9 @@ export class EmailValidation implements FieldValidation {
   ) {}
 
   validate (value: string): Error {
+    if (!value) return null
+
     const isValid = this.emailValidator.isValid(value)
-    return isValid ? null : new InvalidFieldError(this.field)
+    return (isValid) ? null : new InvalidFieldError(this.field)
   }
 }
