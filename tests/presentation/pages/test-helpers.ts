@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker'
+import { MemoryHistory } from 'history'
 import { RenderResult, fireEvent } from '@testing-library/react'
+import { AuthenticationSpy, SaveAccesTokenMock } from '@/tests/presentation/mocks'
 
 export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
   const emailInput = sut.getByPlaceholderText('enter your email address')
@@ -40,4 +42,14 @@ export const checkElementNotExists = (sut: RenderResult, fieldName: string): voi
 export const checkElementTextContent = (sut: RenderResult, fieldName: string, text: string): void => {
   const element = sut.queryByTestId(fieldName)
   expect(element.textContent).toBe(text)
+}
+
+export const awaitSubmitAsyncProcess = (
+  saveAccessTokenMock: SaveAccesTokenMock,
+  authenticationSpy: AuthenticationSpy,
+  history: MemoryHistory
+): void => {
+  expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
+  expect(history.length).toBe(1)
+  expect(history.location.pathname).toBe('/')
 }
