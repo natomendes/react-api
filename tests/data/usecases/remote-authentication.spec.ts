@@ -5,7 +5,7 @@ import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { AuthenticationParams } from '@/domain/usecases'
 import { AccountModel } from '@/domain/models'
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 
 interface SutTypes {
   sut: RemoteAuthentication

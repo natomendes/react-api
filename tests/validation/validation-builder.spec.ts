@@ -1,6 +1,6 @@
 import { EmailValidatorAdapter } from '@/infra/utils/email-validator-adapter'
 import { EmailValidation, MinLengthValidation, RequiredFieldValidation, ValidationBuilder as sut } from '@/validation/validators'
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 
 describe('ValidationBuilder', () => {
   it('Should return RequiredFieldValidation', () => {

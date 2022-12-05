@@ -1,4 +1,4 @@
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 import { RenderResult, fireEvent } from '@testing-library/react'
 
 export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {

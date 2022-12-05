@@ -1,5 +1,5 @@
 import React from 'react'
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 import 'jest-localstorage-mock'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Login } from '@/presentation/pages'

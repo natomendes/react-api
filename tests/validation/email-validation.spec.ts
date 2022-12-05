@@ -1,7 +1,7 @@
 import { EmailValidation } from '@/validation/validators'
 import { EmailValidator } from '@/validation/protocols'
 import { InvalidFieldError } from '@/validation/errors'
-import faker from 'faker'
+import { faker } from '@faker-js/faker'
 
 const makeEmailValidatorStub = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
