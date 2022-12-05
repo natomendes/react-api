@@ -15,6 +15,7 @@ module.exports = {
   },
   roots: ['<rootDir>/tests', '<rootDir>/src'],
   moduleNameMapper: {
+    '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1',
     '\\.scss$': 'identity-obj-proxy'
   }
