@@ -177,6 +177,18 @@ describe('Login Page', () => {
       })
     })
 
+    it('Should present error if SaveAccessToken fails', async () => {
+      const { sut, saveAccessTokenMock } = makeSut()
+      const error = new InvalidCredentialsError()
+      jest.spyOn(saveAccessTokenMock, 'save')
+        .mockRejectedValueOnce(error)
+      simulateValidSubmit(sut)
+      await waitFor(() => {
+        checkElementNotExists(sut, 'spinner')
+        checkElementTextContent(sut, 'error-message-span', error.message)
+      })
+    })
+
     it('Should go to singup page', async () => {
       const { sut, history } = makeSut()
       const register = sut.getByText(/create account/i)
