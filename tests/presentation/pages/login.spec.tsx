@@ -3,11 +3,11 @@ import { faker } from '@faker-js/faker'
 import 'jest-localstorage-mock'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { Login } from '@/presentation/pages'
-import { ValidationStub, AuthenticationSpy } from '../mocks'
+import { ValidationStub, AuthenticationSpy } from '@/tests/presentation/mocks'
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
-import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus, checkButtonIsDisabled, checkElementExists, checkElementNotExists, checkElementTextContent } from './test-helpers'
+import { populateEmailField, populatePasswordField, simulateValidSubmit, checkFieldStatus, checkButtonIsDisabled, checkElementExists, checkElementNotExists, checkElementTextContent } from '@/tests/presentation/pages/test-helpers'
 import { InvalidCredentialsError } from '@/domain/errors'
-import { renderWithRouter } from './renderWithRouter'
+import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
 
 type SutTypes = {
   sut: RenderResult

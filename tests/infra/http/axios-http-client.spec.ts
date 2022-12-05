@@ -1,5 +1,5 @@
 import { AxiosHttpClient } from '@/infra/http/axios-http-client'
-import { mockedAxiosPostResult, mockPostResquest } from '../mocks'
+import { mockedAxiosPostResult, mockPostResquest } from '@/tests/infra/mocks'
 import axios from 'axios'
 
 const makeSut = (): AxiosHttpClient => {
