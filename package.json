@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
-    "test:coveralss": "npm test:ci && coveralls < coverage/lcov.info",
+    "test:coveralss": "npm run test:ci && coveralls < coverage/lcov.info",
     "check": "npm-check -u -s"
   },
   "keywords": [],
