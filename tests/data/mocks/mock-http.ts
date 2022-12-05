@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { HttpPostClient, HttpPostParams, HttpResponse, HttpStatusCode } from '@/data/protocols/http'
 
 export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
@@ -13,4 +14,14 @@ export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
 
     return this.response
   }
+}
+
+export const mockPostResquest = (): HttpPostParams<any> => ({
+  url: faker.internet.url(),
+  body: faker.random.word()
+})
+
+export const mockedAxiosPostResult = {
+  data: faker.random.word(),
+  status: faker.datatype.number()
 }
