@@ -11,6 +11,7 @@ import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/component
 
 const SignUp: React.FC = () => {
   const [state] = useState({
+    nameError: 'Your name is invalid',
     emailError: 'Your email is invalid'
   })
   return (
