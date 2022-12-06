@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { SignUp } from '@/presentation/pages'
 import { ValidationStub } from '@/tests/presentation/mocks'
-import { cleanup, fireEvent, RenderResult } from '@testing-library/react'
+import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
 
@@ -141,6 +141,14 @@ describe('SignUp Page', () => {
       Helper.populateInputField(sut, 'enter your password')
       Helper.populateInputField(sut, 'confirm your password')
       Helper.checkButtonIsDisabled(sut, 'Create Account', false)
+    })
+
+    it('Should show spinner on submit', async () => {
+      const { sut } = makeSut()
+      Helper.simulateValidSubmit(sut)
+      await waitFor(() => {
+        Helper.checkElementExists(sut, 'spinner')
+      })
     })
   })
 })

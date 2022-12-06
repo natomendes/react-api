@@ -11,8 +11,8 @@ export const populateInputField = (sut: RenderResult, placeholderText: string, v
 export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateInputField(sut, 'enter your email address', email)
   populateInputField(sut, 'enter your password', password)
-  const submitButton = sut.getByTestId('submit-login-button')
-  fireEvent.click(submitButton)
+  const form = sut.getByRole('form')
+  fireEvent.submit(form)
 }
 
 export const checkFieldStatus = (sut: RenderResult, fieldName: string, validationError?: string): void => {
