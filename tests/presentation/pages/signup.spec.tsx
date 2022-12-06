@@ -48,5 +48,10 @@ describe('SignUp Page', () => {
       const { sut } = makeSut()
       checkFieldStatus(sut, 'email', 'Your email is invalid')
     })
+
+    it('Should have password status title = "Your password is invalid" and text content "🔴" on start', () => {
+      const { sut } = makeSut()
+      checkFieldStatus(sut, 'password', 'Your password is invalid')
+    })
   })
 })
