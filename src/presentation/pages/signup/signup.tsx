@@ -13,6 +13,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState({
     name: '',
     email: '',
+    password: '',
     nameError: '',
     emailError: '',
     passwordError: 'Your password is invalid',
@@ -23,7 +24,8 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     setState({
       ...state,
       nameError: validation.validate('name', state.name),
-      emailError: validation.validate('email', state.email)
+      emailError: validation.validate('email', state.email),
+      passwordError: validation.validate('password', state.password)
     })
   }, [state.name, state.email])
   return (
