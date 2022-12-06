@@ -178,5 +178,12 @@ describe('SignUp Page', () => {
       await waitFor(() => sut.getByRole('form'))
       expect(addAccountSpy.callsCount).toBe(1)
     })
+
+    it('Should not call AddAccount if form is invalid', async () => {
+      const { sut, addAccountSpy } = makeSut({ validationError: faker.random.words() })
+      Helper.simulateSignUpSubmit(sut)
+      await waitFor(() => sut.getByRole('form'))
+      expect(addAccountSpy.callsCount).toBe(0)
+    })
   })
 })
