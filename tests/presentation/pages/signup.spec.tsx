@@ -28,5 +28,10 @@ describe('SignUp Page', () => {
       const { sut } = makeSut()
       checkElementNotExists(sut, 'spinner')
     })
+
+    it('Should not render error message span component on start', () => {
+      const { sut } = makeSut()
+      checkElementNotExists(sut, 'error-message-span')
+    })
   })
 })
