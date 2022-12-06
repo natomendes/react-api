@@ -139,7 +139,7 @@ describe('Login Page', () => {
       })
     })
 
-    it('Should call Authentication with correct values', async () => {
+    it('Should call Authentication only once', async () => {
       const { sut, authenticationSpy, saveAccessTokenMock, history } = makeSut()
       Helper.simulateLoginSubmit(sut)
       Helper.simulateLoginSubmit(sut)

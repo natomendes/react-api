@@ -170,5 +170,13 @@ describe('SignUp Page', () => {
         })
       })
     })
+
+    it('Should call AddAccount only once', async () => {
+      const { sut, addAccountSpy } = makeSut()
+      Helper.simulateSignUpSubmit(sut)
+      Helper.simulateSignUpSubmit(sut)
+      await waitFor(() => sut.getByRole('form'))
+      expect(addAccountSpy.callsCount).toBe(1)
+    })
   })
 })
