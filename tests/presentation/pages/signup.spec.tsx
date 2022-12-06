@@ -88,49 +88,49 @@ describe('SignUp Page', () => {
 
     it('Should show name status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      Helper.populateNameField(sut)
+      Helper.populateInputField(sut, 'enter your full name')
       Helper.checkFieldStatus(sut, 'name', validationStub.errorMessage)
     })
 
     it('Should show email status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      Helper.populateEmailField(sut)
+      Helper.populateInputField(sut, 'enter your email address')
       Helper.checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
 
     it('Should show password status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      Helper.populatePasswordField(sut)
+      Helper.populateInputField(sut, 'enter your password')
       Helper.checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
 
     it('Should show passwordConfirmation status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      Helper.populatePasswordConfirmationField(sut)
+      Helper.populateInputField(sut, 'confirm your password')
       Helper.checkFieldStatus(sut, 'passwordConfirmation', validationStub.errorMessage)
     })
 
     it('Should show name status ok if Validation succeeds', () => {
       const { sut } = makeSut()
-      Helper.populateNameField(sut)
+      Helper.populateInputField(sut, 'enter your full name')
       Helper.checkFieldStatus(sut, 'name')
     })
 
     it('Should show email status ok if Validation succeeds', () => {
       const { sut } = makeSut()
-      Helper.populateEmailField(sut)
+      Helper.populateInputField(sut, 'enter your email address')
       Helper.checkFieldStatus(sut, 'email')
     })
 
     it('Should show password status ok if Validation succeeds', () => {
       const { sut } = makeSut()
-      Helper.populatePasswordField(sut)
+      Helper.populateInputField(sut, 'enter your password')
       Helper.checkFieldStatus(sut, 'password')
     })
 
     it('Should show passwordConfirmation status ok if Validation succeeds', () => {
       const { sut } = makeSut()
-      Helper.populatePasswordConfirmationField(sut)
+      Helper.populateInputField(sut, 'confirm your password')
       Helper.checkFieldStatus(sut, 'passwordConfirmation')
     })
   })

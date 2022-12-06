@@ -3,29 +3,14 @@ import { MemoryHistory } from 'history'
 import { RenderResult, fireEvent } from '@testing-library/react'
 import { AuthenticationSpy, SaveAccesTokenMock } from '@/tests/presentation/mocks'
 
-export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
-  const emailInput = sut.getByPlaceholderText('enter your email address')
-  fireEvent.input(emailInput, { target: { value: email } })
-}
-
-export const populateNameField = (sut: RenderResult, name = faker.random.word()): void => {
-  const nameInput = sut.getByPlaceholderText('enter your full name')
-  fireEvent.input(nameInput, { target: { value: name } })
-}
-
-export const populatePasswordField = (sut: RenderResult, password = faker.internet.password()): void => {
-  const passwordInput = sut.getByPlaceholderText('enter your password')
-  fireEvent.input(passwordInput, { target: { value: password } })
-}
-
-export const populatePasswordConfirmationField = (sut: RenderResult, password = faker.internet.password()): void => {
-  const passwordInput = sut.getByPlaceholderText('confirm your password')
-  fireEvent.input(passwordInput, { target: { value: password } })
+export const populateInputField = (sut: RenderResult, placeholderText: string, value = faker.random.word()): void => {
+  const emailInput = sut.getByPlaceholderText(placeholderText)
+  fireEvent.input(emailInput, { target: { value } })
 }
 
 export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
-  populateEmailField(sut, email)
-  populatePasswordField(sut, password)
+  populateInputField(sut, 'enter your email address', email)
+  populateInputField(sut, 'enter your password', password)
   const submitButton = sut.getByTestId('submit-login-button')
   fireEvent.click(submitButton)
 }
