@@ -100,6 +100,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
 
           <Link
             className={Styles.link}
+            replace
             to='/login'
           >
             sign in
