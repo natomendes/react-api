@@ -67,8 +67,8 @@ describe('SignUp Page', () => {
     })
 
     it('Should have passwordConfirmation status title = "Your passwordConfirmation is invalid" and text content "🔴" on start', () => {
-      const { sut } = makeSut()
-      Helper.checkFieldStatus(sut, 'passwordConfirmation', 'Your passwordConfirmation is invalid')
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.checkFieldStatus(sut, 'passwordConfirmation', validationStub.errorMessage)
     })
 
     it('Should have inputs as read only on start', () => {
@@ -102,6 +102,12 @@ describe('SignUp Page', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       Helper.populatePasswordField(sut)
       Helper.checkFieldStatus(sut, 'password', validationStub.errorMessage)
+    })
+
+    it('Should show passwordConfirmation status error if Validation fails', () => {
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.populatePasswordConfirmationField(sut)
+      Helper.checkFieldStatus(sut, 'passwordConfirmation', validationStub.errorMessage)
     })
   })
 })

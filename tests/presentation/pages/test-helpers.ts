@@ -18,6 +18,11 @@ export const populatePasswordField = (sut: RenderResult, password = faker.intern
   fireEvent.input(passwordInput, { target: { value: password } })
 }
 
+export const populatePasswordConfirmationField = (sut: RenderResult, password = faker.internet.password()): void => {
+  const passwordInput = sut.getByPlaceholderText('confirm your password')
+  fireEvent.input(passwordInput, { target: { value: password } })
+}
+
 export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateEmailField(sut, email)
   populatePasswordField(sut, password)
