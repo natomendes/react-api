@@ -17,8 +17,8 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     passwordConfirmation: '',
     nameError: '',
     emailError: '',
-    passwordError: 'Your password is invalid',
-    passwordConfirmationError: 'Your passwordConfirmation is invalid'
+    passwordError: '',
+    passwordConfirmationError: ''
   })
 
   useEffect(() => {

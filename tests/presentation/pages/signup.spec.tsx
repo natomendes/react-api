@@ -109,5 +109,11 @@ describe('SignUp Page', () => {
       Helper.populatePasswordConfirmationField(sut)
       Helper.checkFieldStatus(sut, 'passwordConfirmation', validationStub.errorMessage)
     })
+
+    it('Should show name status ok if Validation succeeds', () => {
+      const { sut } = makeSut()
+      Helper.populateNameField(sut)
+      Helper.checkFieldStatus(sut, 'name')
+    })
   })
 })
