@@ -155,7 +155,7 @@ describe('SignUp Page', () => {
       })
     })
 
-    it('Should call Authentication with correct values', async () => {
+    it('Should call AddAccount with correct values', async () => {
       const { sut, addAccountSpy } = makeSut()
       const name = faker.name.fullName()
       const email = faker.internet.email()
