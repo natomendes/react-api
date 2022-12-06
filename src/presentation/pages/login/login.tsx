@@ -27,15 +27,16 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    if (!state.isLoading && !(state.emailError || state.passwordError)) {
-      try {
-        setState({ ...state, isLoading: true })
-        const { accessToken } = await authentication.auth({ email: state.email, password: state.password })
-        await saveAccessToken.save(accessToken)
-        history.replace('/')
-      } catch (error) {
-        setState({ ...state, errorMessage: error.message })
-      }
+    if (state.isLoading || state.emailError || state.passwordError) {
+      return
+    }
+    try {
+      setState({ ...state, isLoading: true })
+      const { accessToken } = await authentication.auth({ email: state.email, password: state.password })
+      await saveAccessToken.save(accessToken)
+      history.replace('/')
+    } catch (error) {
+      setState({ ...state, isLoading: false, errorMessage: error.message })
     }
   }
 
