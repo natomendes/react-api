@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Styles from './signup-styles.scss'
 import Context from '@/presentation/contexts/form/form-context'
-import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/components'
+import { LoginHeader, Footer, Input, FormStatus, Spinner } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
 
 const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState({
+    isLoading: false,
     name: '',
     email: '',
     password: '',
@@ -30,12 +31,18 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
       passwordConfirmationError: validation.validate('passwordConfirmation', state.passwordConfirmation)
     })
   }, [state.name, state.email, state.password, state.passwordConfirmation])
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    setState({ ...state, isLoading: true })
+  }
+
   return (
     <div className={Styles.signup}>
       <LoginHeader />
 
       <Context.Provider value={{ state, setState }}>
         <form
+          onSubmit={handleSubmit}
           className={Styles.form}
           role="form"
         >
@@ -67,7 +74,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
             type="submit"
             disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError}
           >
-            Create Account
+            { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Create Account' }
           </button>
 
           <Link
