@@ -13,7 +13,8 @@ const SignUp: React.FC = () => {
   const [state] = useState({
     nameError: 'Your name is invalid',
     emailError: 'Your email is invalid',
-    passwordError: 'Your password is invalid'
+    passwordError: 'Your password is invalid',
+    passwordConfirmationError: 'Your passwordConfirmation is invalid'
   })
   return (
     <div className={Styles.signup}>
