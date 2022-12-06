@@ -194,7 +194,7 @@ describe('Login Page', () => {
       const register = sut.getByText(/create account/i)
       fireEvent.click(register)
       await waitFor(() => {
-        expect(history.length).toBe(2)
+        expect(history.length).toBe(1)
         expect(history.location.pathname).toBe('/signup')
       })
     })

@@ -74,6 +74,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
           <Link
             className={Styles.link}
+            replace
             to='/signup'
           >
             create account
