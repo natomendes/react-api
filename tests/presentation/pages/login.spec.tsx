@@ -43,7 +43,6 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 describe('Login Page', () => {
-  afterEach(cleanup)
   describe('Initial State', () => {
     afterEach(cleanup)
     it('Should not render Spinner component on start', () => {
@@ -78,6 +77,7 @@ describe('Login Page', () => {
     })
   })
   describe('Component Flow', () => {
+    afterEach(cleanup)
     it('Should have inputs as read only false on focus', () => {
       const { sut } = makeSut({ validationError: faker.random.words() })
       const emailInput = sut.getByPlaceholderText('enter your email address')
@@ -164,8 +164,8 @@ describe('Login Page', () => {
         .mockRejectedValueOnce(error)
       Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
-        Helper.checkElementNotExists(sut, 'spinner')
         Helper.checkElementTextContent(sut, 'error-message-span', error.message)
+        Helper.checkElementNotExists(sut, 'spinner')
       })
     })
 

@@ -6,6 +6,7 @@ import { ValidationStub, AddAccountSpy } from '@/tests/presentation/mocks'
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
+import { EmailInUseError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
@@ -184,6 +185,18 @@ describe('SignUp Page', () => {
       Helper.simulateSignUpSubmit(sut)
       await waitFor(() => sut.getByRole('form'))
       expect(addAccountSpy.callsCount).toBe(0)
+    })
+
+    it('Should present error if AddAccount fails', async () => {
+      const { sut, addAccountSpy } = makeSut()
+      const error = new EmailInUseError()
+      jest.spyOn(addAccountSpy, 'add')
+        .mockRejectedValueOnce(error)
+      Helper.simulateSignUpSubmit(sut)
+      await waitFor(() => {
+        Helper.checkElementNotExists(sut, 'spinner')
+      })
+      Helper.checkElementTextContent(sut, 'error-message-span', error.message)
     })
   })
 })

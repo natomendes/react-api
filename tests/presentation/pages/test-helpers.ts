@@ -41,7 +41,7 @@ export const checkButtonIsDisabled = (sut: RenderResult, fieldName: string, isDi
 }
 
 export const checkElementExists = (sut: RenderResult, fieldName: string): void => {
-  expect(sut.getByTestId(fieldName)).toBeTruthy()
+  expect(sut.getByTestId(fieldName)).toBeDefined()
 }
 
 export const checkElementNotExists = (sut: RenderResult, fieldName: string): void => {
