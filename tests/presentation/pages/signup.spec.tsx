@@ -6,7 +6,7 @@ import { ValidationStub, AddAccountSpy, SaveAccesTokenMock } from '@/tests/prese
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
-import { EmailInUseError } from '@/domain/errors'
+import { EmailInUseError, UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RenderResult
@@ -207,11 +207,23 @@ describe('SignUp Page', () => {
 
     it('Should call SaveAccessToken on success', async () => {
       const { sut, addAccountSpy, saveAccessTokenMock, history } = makeSut()
-      Helper.simulateLoginSubmit(sut)
+      Helper.simulateSignUpSubmit(sut)
       await waitFor(async () => {
         expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
         expect(history.length).toBe(1)
         expect(history.location.pathname).toBe('/')
+      })
+    })
+
+    it('Should present error if SaveAccessToken fails', async () => {
+      const { sut, saveAccessTokenMock } = makeSut()
+      const error = new UnexpectedError()
+      jest.spyOn(saveAccessTokenMock, 'save')
+        .mockRejectedValueOnce(error)
+      Helper.simulateSignUpSubmit(sut)
+      await waitFor(() => {
+        Helper.checkElementNotExists(sut, 'spinner')
+        Helper.checkElementTextContent(sut, 'error-message-span', error.message)
       })
     })
   })
