@@ -226,5 +226,15 @@ describe('SignUp Page', () => {
         Helper.checkElementTextContent(sut, 'error-message-span', error.message)
       })
     })
+
+    it('Should go to singup page', async () => {
+      const { sut, history } = makeSut()
+      const login = sut.getByText(/sign in/i)
+      fireEvent.click(login)
+      await waitFor(() => {
+        expect(history.length).toBe(1)
+        expect(history.location.pathname).toBe('/login')
+      })
+    })
   })
 })
