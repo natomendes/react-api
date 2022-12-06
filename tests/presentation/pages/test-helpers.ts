@@ -17,7 +17,7 @@ export const simulateLoginSubmit = (sut: RenderResult, email = faker.internet.em
 
 export const simulateSignUpSubmit = (
   sut: RenderResult,
-  name = faker.random.word(),
+  name = faker.name.fullName(),
   email = faker.internet.email(),
   password = faker.internet.password()
 ): void => {

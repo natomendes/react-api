@@ -2,7 +2,7 @@ import React from 'react'
 import { faker } from '@faker-js/faker'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { SignUp } from '@/presentation/pages'
-import { ValidationStub } from '@/tests/presentation/mocks'
+import { ValidationStub, AddAccountSpy } from '@/tests/presentation/mocks'
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
@@ -10,6 +10,7 @@ import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
 type SutTypes = {
   sut: RenderResult
   validationStub: ValidationStub
+  addAccountSpy: AddAccountSpy
   history: MemoryHistory
 }
 
@@ -19,16 +20,19 @@ type SutParams = {
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
-  const history = createMemoryHistory()
+  const addAccountSpy = new AddAccountSpy()
   validationStub.errorMessage = params?.validationError
+  const history = createMemoryHistory()
   const sut = renderWithRouter(
     <SignUp
       validation={validationStub}
+      addAccount={addAccountSpy}
     />, history
   )
   return {
     sut,
     validationStub,
+    addAccountSpy,
     history
   }
 }
@@ -148,6 +152,22 @@ describe('SignUp Page', () => {
       Helper.simulateSignUpSubmit(sut)
       await waitFor(() => {
         Helper.checkElementExists(sut, 'spinner')
+      })
+    })
+
+    it('Should call Authentication with correct values', async () => {
+      const { sut, addAccountSpy } = makeSut()
+      const name = faker.name.fullName()
+      const email = faker.internet.email()
+      const password = faker.internet.password()
+      Helper.simulateSignUpSubmit(sut, name, email, password)
+      await waitFor(() => {
+        expect(addAccountSpy.params).toEqual({
+          name,
+          email,
+          password,
+          passwordConfirmation: password
+        })
       })
     })
   })
