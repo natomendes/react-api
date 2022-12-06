@@ -62,8 +62,8 @@ describe('SignUp Page', () => {
     })
 
     it('Should have password status title = "Your password is invalid" and text content "🔴" on start', () => {
-      const { sut } = makeSut()
-      Helper.checkFieldStatus(sut, 'password', 'Your password is invalid')
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
 
     it('Should have passwordConfirmation status title = "Your passwordConfirmation is invalid" and text content "🔴" on start', () => {
@@ -96,6 +96,12 @@ describe('SignUp Page', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
       Helper.populateEmailField(sut)
       Helper.checkFieldStatus(sut, 'email', validationStub.errorMessage)
+    })
+
+    it('Should show password status error if Validation fails', () => {
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.populatePasswordField(sut)
+      Helper.checkFieldStatus(sut, 'password', validationStub.errorMessage)
     })
   })
 })
