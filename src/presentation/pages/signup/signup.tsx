@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Styles from './signup-styles.scss'
 import Context from '@/presentation/contexts/form/form-context'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/components'
+// import { Validation } from '@/presentation/protocols'
+
+// type Props = {
+//   validation: Validation
+// }
 
 const SignUp: React.FC = () => {
+  const [state] = useState({
+    emailError: 'Your email is invalid'
+  })
   return (
     <div className={Styles.signup}>
       <LoginHeader />
 
-      <Context.Provider value={ { state: {} } }>
+      <Context.Provider value={{ state }}>
         <form
           className={Styles.form}
           role="form"
