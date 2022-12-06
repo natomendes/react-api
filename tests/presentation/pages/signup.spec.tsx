@@ -39,6 +39,11 @@ describe('SignUp Page', () => {
       checkButtonIsDisabled(sut, 'Create Account', true)
     })
 
+    it('Should have name status title = "Your name is invalid" and text content "🔴" on start', () => {
+      const { sut } = makeSut()
+      checkFieldStatus(sut, 'name', 'Your name is invalid')
+    })
+
     it('Should have email status title = "Your email is invalid" and text content "🔴" on start', () => {
       const { sut } = makeSut()
       checkFieldStatus(sut, 'email', 'Your email is invalid')
