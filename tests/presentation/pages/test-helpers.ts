@@ -8,9 +8,23 @@ export const populateInputField = (sut: RenderResult, placeholderText: string, v
   fireEvent.input(emailInput, { target: { value } })
 }
 
-export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
+export const simulateLoginSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
   populateInputField(sut, 'enter your email address', email)
   populateInputField(sut, 'enter your password', password)
+  const form = sut.getByRole('form')
+  fireEvent.submit(form)
+}
+
+export const simulateSignUpSubmit = (
+  sut: RenderResult,
+  name = faker.random.word(),
+  email = faker.internet.email(),
+  password = faker.internet.password()
+): void => {
+  populateInputField(sut, 'enter your full name', name)
+  populateInputField(sut, 'enter your email address', email)
+  populateInputField(sut, 'enter your password', password)
+  populateInputField(sut, 'confirm your password', password)
   const form = sut.getByRole('form')
   fireEvent.submit(form)
 }

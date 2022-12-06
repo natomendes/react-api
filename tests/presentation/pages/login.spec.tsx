@@ -118,7 +118,7 @@ describe('Login Page', () => {
 
     it('Should show spinner on submit', async () => {
       const { sut, saveAccessTokenMock, authenticationSpy, history } = makeSut()
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
         Helper.checkElementExists(sut, 'spinner')
         Helper.awaitSubmitAsyncProcess(saveAccessTokenMock, authenticationSpy, history)
@@ -129,7 +129,7 @@ describe('Login Page', () => {
       const { sut, authenticationSpy, saveAccessTokenMock, history } = makeSut()
       const email = faker.internet.email()
       const password = faker.internet.password()
-      Helper.simulateValidSubmit(sut, email, password)
+      Helper.simulateLoginSubmit(sut, email, password)
       await waitFor(() => {
         expect(authenticationSpy.params).toEqual({
           email,
@@ -141,8 +141,8 @@ describe('Login Page', () => {
 
     it('Should call Authentication with correct values', async () => {
       const { sut, authenticationSpy, saveAccessTokenMock, history } = makeSut()
-      Helper.simulateValidSubmit(sut)
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
         Helper.awaitSubmitAsyncProcess(saveAccessTokenMock, authenticationSpy, history)
       })
@@ -162,7 +162,7 @@ describe('Login Page', () => {
       const error = new InvalidCredentialsError()
       jest.spyOn(authenticationSpy, 'auth')
         .mockRejectedValueOnce(error)
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
         Helper.checkElementNotExists(sut, 'spinner')
         Helper.checkElementTextContent(sut, 'error-message-span', error.message)
@@ -171,7 +171,7 @@ describe('Login Page', () => {
 
     it('Should call SaveAccessToken on success', async () => {
       const { sut, authenticationSpy, saveAccessTokenMock, history } = makeSut()
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(async () => {
         Helper.awaitSubmitAsyncProcess(saveAccessTokenMock, authenticationSpy, history)
       })
@@ -182,7 +182,7 @@ describe('Login Page', () => {
       const error = new InvalidCredentialsError()
       jest.spyOn(saveAccessTokenMock, 'save')
         .mockRejectedValueOnce(error)
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
         Helper.checkElementNotExists(sut, 'spinner')
         Helper.checkElementTextContent(sut, 'error-message-span', error.message)
@@ -201,7 +201,7 @@ describe('Login Page', () => {
 
     it('Should go to main page on success', async () => {
       const { sut, history, saveAccessTokenMock, authenticationSpy } = makeSut()
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateLoginSubmit(sut)
       await waitFor(() => {
         Helper.awaitSubmitAsyncProcess(saveAccessTokenMock, authenticationSpy, history)
       })

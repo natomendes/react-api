@@ -145,7 +145,7 @@ describe('SignUp Page', () => {
 
     it('Should show spinner on submit', async () => {
       const { sut } = makeSut()
-      Helper.simulateValidSubmit(sut)
+      Helper.simulateSignUpSubmit(sut)
       await waitFor(() => {
         Helper.checkElementExists(sut, 'spinner')
       })
