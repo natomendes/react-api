@@ -133,5 +133,14 @@ describe('SignUp Page', () => {
       Helper.populateInputField(sut, 'confirm your password')
       Helper.checkFieldStatus(sut, 'passwordConfirmation')
     })
+
+    it('Should enabled submit button if form is valid', () => {
+      const { sut } = makeSut()
+      Helper.populateInputField(sut, 'enter your full name')
+      Helper.populateInputField(sut, 'enter your email address')
+      Helper.populateInputField(sut, 'enter your password')
+      Helper.populateInputField(sut, 'confirm your password')
+      Helper.checkButtonIsDisabled(sut, 'Create Account', false)
+    })
   })
 })
