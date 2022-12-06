@@ -8,6 +8,11 @@ export const populateEmailField = (sut: RenderResult, email = faker.internet.ema
   fireEvent.input(emailInput, { target: { value: email } })
 }
 
+export const populateNameField = (sut: RenderResult, name = faker.random.word()): void => {
+  const nameInput = sut.getByPlaceholderText('enter your full name')
+  fireEvent.input(nameInput, { target: { value: name } })
+}
+
 export const populatePasswordField = (sut: RenderResult, password = faker.internet.password()): void => {
   const passwordInput = sut.getByPlaceholderText('enter your password')
   fireEvent.input(passwordInput, { target: { value: password } })
