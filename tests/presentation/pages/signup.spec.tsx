@@ -1,5 +1,5 @@
 import React from 'react'
-import { RenderResult } from '@testing-library/react'
+import { cleanup, fireEvent, RenderResult } from '@testing-library/react'
 import { MemoryHistory, createMemoryHistory } from 'history'
 import { SignUp } from '@/presentation/pages'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
@@ -23,6 +23,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('SignUp Page', () => {
+  afterEach(cleanup)
   describe('Initial State', () => {
     it('Should not render Spinner component on start', () => {
       const { sut } = makeSut()
@@ -63,6 +64,14 @@ describe('SignUp Page', () => {
       const { sut } = makeSut()
       const emailInput = sut.getByPlaceholderText('enter your email address')
       expect(emailInput).toHaveProperty('readOnly', true)
+    })
+  })
+  describe('Component Flow', () => {
+    it('Should have inputs as read only false on focus', () => {
+      const { sut } = makeSut()
+      const emailInput = sut.getByPlaceholderText('enter your email address')
+      fireEvent.focus(emailInput)
+      expect(emailInput).toHaveProperty('readOnly', false)
     })
   })
 })
