@@ -2,7 +2,7 @@ import React from 'react'
 import { faker } from '@faker-js/faker'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import { SignUp } from '@/presentation/pages'
-import { ValidationStub, AddAccountSpy } from '@/tests/presentation/mocks'
+import { ValidationStub, AddAccountSpy, SaveAccesTokenMock } from '@/tests/presentation/mocks'
 import { cleanup, fireEvent, RenderResult, waitFor } from '@testing-library/react'
 import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
@@ -12,6 +12,7 @@ type SutTypes = {
   sut: RenderResult
   validationStub: ValidationStub
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccesTokenMock
   history: MemoryHistory
 }
 
@@ -22,18 +23,21 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const addAccountSpy = new AddAccountSpy()
+  const saveAccessTokenMock = new SaveAccesTokenMock()
   validationStub.errorMessage = params?.validationError
-  const history = createMemoryHistory()
+  const history = createMemoryHistory({ initialEntries: ['/signup'] })
   const sut = renderWithRouter(
     <SignUp
       validation={validationStub}
       addAccount={addAccountSpy}
+      saveAccessToken={saveAccessTokenMock}
     />, history
   )
   return {
     sut,
     validationStub,
     addAccountSpy,
+    saveAccessTokenMock,
     history
   }
 }
@@ -149,15 +153,16 @@ describe('SignUp Page', () => {
     })
 
     it('Should show spinner on submit', async () => {
-      const { sut } = makeSut()
+      const { sut, history } = makeSut()
       Helper.simulateSignUpSubmit(sut)
       await waitFor(() => {
         Helper.checkElementExists(sut, 'spinner')
+        expect(history.location.pathname).toBe('/')
       })
     })
 
     it('Should call AddAccount with correct values', async () => {
-      const { sut, addAccountSpy } = makeSut()
+      const { sut, addAccountSpy, history } = makeSut()
       const name = faker.name.fullName()
       const email = faker.internet.email()
       const password = faker.internet.password()
@@ -169,15 +174,16 @@ describe('SignUp Page', () => {
           password,
           passwordConfirmation: password
         })
+        expect(history.location.pathname).toBe('/')
       })
     })
 
     it('Should call AddAccount only once', async () => {
-      const { sut, addAccountSpy } = makeSut()
+      const { sut, addAccountSpy, history } = makeSut()
       Helper.simulateSignUpSubmit(sut)
       Helper.simulateSignUpSubmit(sut)
-      await waitFor(() => sut.getByRole('form'))
       expect(addAccountSpy.callsCount).toBe(1)
+      await waitFor(() => expect(history.location.pathname).toBe('/'))
     })
 
     it('Should not call AddAccount if form is invalid', async () => {
@@ -197,6 +203,16 @@ describe('SignUp Page', () => {
         Helper.checkElementNotExists(sut, 'spinner')
       })
       Helper.checkElementTextContent(sut, 'error-message-span', error.message)
+    })
+
+    it('Should call SaveAccessToken on success', async () => {
+      const { sut, addAccountSpy, saveAccessTokenMock, history } = makeSut()
+      Helper.simulateLoginSubmit(sut)
+      await waitFor(async () => {
+        expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+        expect(history.length).toBe(1)
+        expect(history.location.pathname).toBe('/')
+      })
     })
   })
 })

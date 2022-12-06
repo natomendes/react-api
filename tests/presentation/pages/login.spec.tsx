@@ -24,7 +24,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
   const saveAccessTokenMock = new SaveAccesTokenMock()
-  const history = createMemoryHistory()
+  const history = createMemoryHistory({ initialEntries: ['/login'] })
   validationStub.errorMessage = params?.validationError
   const sut = renderWithRouter(
     <Login
