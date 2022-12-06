@@ -40,6 +40,7 @@ const SignUp: React.FC = () => {
           <button
             className={Styles.submit}
             type="submit"
+            disabled
           >
             Create Account
           </button>
