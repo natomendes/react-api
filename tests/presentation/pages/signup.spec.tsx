@@ -58,5 +58,11 @@ describe('SignUp Page', () => {
       const { sut } = makeSut()
       checkFieldStatus(sut, 'passwordConfirmation', 'Your passwordConfirmation is invalid')
     })
+
+    it('Should have inputs as read only on start', () => {
+      const { sut } = makeSut()
+      const emailInput = sut.getByPlaceholderText('enter your email address')
+      expect(emailInput).toHaveProperty('readOnly', true)
+    })
   })
 })
