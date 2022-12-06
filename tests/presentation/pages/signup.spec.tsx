@@ -4,7 +4,7 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { SignUp } from '@/presentation/pages'
 import { ValidationStub } from '@/tests/presentation/mocks'
 import { cleanup, fireEvent, RenderResult } from '@testing-library/react'
-import { checkFieldStatus, checkButtonIsDisabled, checkElementNotExists, populateNameField } from '@/tests/presentation/pages/test-helpers'
+import * as Helper from '@/tests/presentation/pages/test-helpers'
 import { renderWithRouter } from '@/tests/presentation/pages/renderWithRouter'
 
 type SutTypes = {
@@ -38,37 +38,37 @@ describe('SignUp Page', () => {
     afterEach(cleanup)
     it('Should not render Spinner component on start', () => {
       const { sut } = makeSut({ validationError: faker.random.words() })
-      checkElementNotExists(sut, 'spinner')
+      Helper.checkElementNotExists(sut, 'spinner')
     })
 
     it('Should not render error message span component on start', () => {
       const { sut } = makeSut({ validationError: faker.random.words() })
-      checkElementNotExists(sut, 'error-message-span')
+      Helper.checkElementNotExists(sut, 'error-message-span')
     })
 
     it('Should have submit button disable on start', () => {
       const { sut } = makeSut({ validationError: faker.random.words() })
-      checkButtonIsDisabled(sut, 'Create Account', true)
+      Helper.checkButtonIsDisabled(sut, 'Create Account', true)
     })
 
     it('Should have name status title = "Your name is invalid" and text content "🔴" on start', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      checkFieldStatus(sut, 'name', validationStub.errorMessage)
+      Helper.checkFieldStatus(sut, 'name', validationStub.errorMessage)
     })
 
     it('Should have email status title = "Your email is invalid" and text content "🔴" on start', () => {
-      const { sut } = makeSut()
-      checkFieldStatus(sut, 'email', 'Your email is invalid')
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
 
     it('Should have password status title = "Your password is invalid" and text content "🔴" on start', () => {
       const { sut } = makeSut()
-      checkFieldStatus(sut, 'password', 'Your password is invalid')
+      Helper.checkFieldStatus(sut, 'password', 'Your password is invalid')
     })
 
     it('Should have passwordConfirmation status title = "Your passwordConfirmation is invalid" and text content "🔴" on start', () => {
       const { sut } = makeSut()
-      checkFieldStatus(sut, 'passwordConfirmation', 'Your passwordConfirmation is invalid')
+      Helper.checkFieldStatus(sut, 'passwordConfirmation', 'Your passwordConfirmation is invalid')
     })
 
     it('Should have inputs as read only on start', () => {
@@ -88,8 +88,14 @@ describe('SignUp Page', () => {
 
     it('Should show name status error if Validation fails', () => {
       const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
-      populateNameField(sut)
-      checkFieldStatus(sut, 'name', validationStub.errorMessage)
+      Helper.populateNameField(sut)
+      Helper.checkFieldStatus(sut, 'name', validationStub.errorMessage)
+    })
+
+    it('Should show email status error if Validation fails', () => {
+      const { sut, validationStub } = makeSut({ validationError: faker.random.words() })
+      Helper.populateEmailField(sut)
+      Helper.checkFieldStatus(sut, 'email', validationStub.errorMessage)
     })
   })
 })
