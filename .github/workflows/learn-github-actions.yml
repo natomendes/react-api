@@ -2,12 +2,13 @@ name: CI
 run-name: ${{ github.actor }} is running CI
 on: [push]
 jobs:
-  check-bats-version:
+  CI:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - run: npm install
       - run: npx eslint 'src/**'
       - run: npm run test:ci
