@@ -3,21 +3,30 @@ import { MemoryHistory } from 'history'
 import { RenderResult, fireEvent } from '@testing-library/react'
 import { AuthenticationSpy, SaveAccesTokenMock } from '@/tests/presentation/mocks'
 
-export const populateEmailField = (sut: RenderResult, email = faker.internet.email()): void => {
-  const emailInput = sut.getByPlaceholderText('enter your email address')
-  fireEvent.input(emailInput, { target: { value: email } })
+export const populateInputField = (sut: RenderResult, placeholderText: string, value = faker.random.word()): void => {
+  const emailInput = sut.getByPlaceholderText(placeholderText)
+  fireEvent.input(emailInput, { target: { value } })
 }
 
-export const populatePasswordField = (sut: RenderResult, password = faker.internet.password()): void => {
-  const passwordInput = sut.getByPlaceholderText('enter your password')
-  fireEvent.input(passwordInput, { target: { value: password } })
+export const simulateLoginSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
+  populateInputField(sut, 'enter your email address', email)
+  populateInputField(sut, 'enter your password', password)
+  const form = sut.getByRole('form')
+  fireEvent.submit(form)
 }
 
-export const simulateValidSubmit = (sut: RenderResult, email = faker.internet.email(), password = faker.internet.password()): void => {
-  populateEmailField(sut, email)
-  populatePasswordField(sut, password)
-  const submitButton = sut.getByTestId('submit-login-button')
-  fireEvent.click(submitButton)
+export const simulateSignUpSubmit = (
+  sut: RenderResult,
+  name = faker.name.fullName(),
+  email = faker.internet.email(),
+  password = faker.internet.password()
+): void => {
+  populateInputField(sut, 'enter your full name', name)
+  populateInputField(sut, 'enter your email address', email)
+  populateInputField(sut, 'enter your password', password)
+  populateInputField(sut, 'confirm your password', password)
+  const form = sut.getByRole('form')
+  fireEvent.submit(form)
 }
 
 export const checkFieldStatus = (sut: RenderResult, fieldName: string, validationError?: string): void => {
@@ -32,7 +41,7 @@ export const checkButtonIsDisabled = (sut: RenderResult, fieldName: string, isDi
 }
 
 export const checkElementExists = (sut: RenderResult, fieldName: string): void => {
-  expect(sut.getByTestId(fieldName)).toBeTruthy()
+  expect(sut.getByTestId(fieldName)).toBeDefined()
 }
 
 export const checkElementNotExists = (sut: RenderResult, fieldName: string): void => {

@@ -19,13 +19,13 @@ const makeSut = (): SutTypes => {
 describe('RequiredFieldValidation', () => {
   it('Should return error if field is empty', () => {
     const { sut, field } = makeSut()
-    const error = sut.validate('')
+    const error = sut.validate({ [field]: '' })
     expect(error).toEqual(new RequiredFieldError(field))
   })
 
   it('Should return falsy if field is not empty', () => {
-    const { sut } = makeSut()
-    const error = sut.validate(faker.random.word())
+    const { sut, field } = makeSut()
+    const error = sut.validate({ [field]: faker.random.word() })
     expect(error).toBeFalsy()
   })
 })

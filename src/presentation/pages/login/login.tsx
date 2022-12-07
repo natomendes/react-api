@@ -4,8 +4,9 @@ import Styles from './login-styles.scss'
 import { Authentication, SaveAccessToken } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols'
 import Context from '@/presentation/contexts/form/form-context'
-import { LoginHeader, Footer, Input, FormStatus, Spinner } from '@/presentation/components'
+import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/components'
 import { initialState } from './login-initial-state'
+import SubmitButton from '@/presentation/components/submit-button/submit-button'
 
 type Props = {
   validation: Validation
@@ -18,24 +19,30 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
   const [state, setState] = useState(initialState)
 
   useEffect(() => {
+    const { email, password } = state
+    const formData = { email, password }
+    const emailError = validation.validate('email', formData)
+    const passwordError = validation.validate('password', formData)
+
     setState({
       ...state,
-      emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password)
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError
     })
   }, [state.email, state.password])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    if (!state.isLoading && !(state.emailError || state.passwordError)) {
-      try {
+    try {
+      if (!state.isLoading && !state.isFormInvalid) {
         setState({ ...state, isLoading: true })
         const { accessToken } = await authentication.auth({ email: state.email, password: state.password })
         await saveAccessToken.save(accessToken)
         history.replace('/')
-      } catch (error) {
-        setState({ ...state, errorMessage: error.message })
       }
+    } catch (error) {
+      setState({ ...state, isLoading: false, errorMessage: error.message })
     }
   }
 
@@ -62,17 +69,11 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
             placeholder='enter your password'
           />
 
-          <button
-            className={Styles.submit}
-            type="submit"
-            disabled={!!state.emailError || !!state.passwordError}
-            data-testid="submit-login-button"
-          >
-            { state.isLoading ? <Spinner className={Styles.spinner} /> : 'Enter' }
-          </button>
+          <SubmitButton text="Enter" />
 
           <Link
             className={Styles.link}
+            replace
             to='/signup'
           >
             create account

@@ -10,7 +10,7 @@
   ],
   "plugins": ["react"],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": ["./tsconfig.json", "./webpack.config.js"]
   },
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
@@ -19,11 +19,6 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "react/prop-types": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      {
-        "checksVoidReturn": false
-      }
-    ]
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }
