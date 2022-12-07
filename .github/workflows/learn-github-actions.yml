@@ -1,5 +1,5 @@
-name: CI
-run-name: ${{ github.actor }} is running CI
+name: release
+run-name: ${{ github.actor }} is running release
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
           node-version: '16.x'
       - name: Install dependencies
         run: npm install
-      - name: Run eslint check
+      - name: Eslint check
         run: npx eslint 'src/**'
-      - name: Run test coverage
+      - name: Test coverage
         run: npm run test:ci
