@@ -33,15 +33,5 @@
         text-decoration: underline;
       }
     }
-
-    .submit {
-      &:disabled {
-        background: $disabledBackground;
-        color: $disabledColor;
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
   }
 }
