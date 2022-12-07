@@ -30,20 +30,20 @@ describe('EmailValidation', () => {
   it('Should return error if email is invalid', () => {
     const { sut, emailValidatorStub } = makeSut('email')
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
-    const error = sut.validate(faker.random.word())
+    const error = sut.validate({ email: faker.random.word() })
     expect(error).toEqual(new InvalidFieldError('email'))
   })
 
   it('Should return falsy if email invalid', () => {
     const { sut } = makeSut('email')
-    const error = sut.validate(faker.internet.email())
+    const error = sut.validate({ email: faker.random.word() })
     expect(error).toBeFalsy()
   })
 
   it('Should return falsy if email is empty', () => {
     const { sut, emailValidatorStub } = makeSut('email')
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
-    const error = sut.validate('')
+    const error = sut.validate({ email: '' })
     expect(isValidSpy).not.toHaveBeenCalled()
     expect(error).toBeFalsy()
   })
